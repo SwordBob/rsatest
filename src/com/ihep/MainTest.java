@@ -1,4 +1,6 @@
-package com.ihep;  
+package com.ihep;
+
+import org.apache.commons.codec.binary.Base64;
 
 public class MainTest {  
    
@@ -12,9 +14,9 @@ public class MainTest {
         String plainText="ihep_公钥加密私钥解密";  
         //公钥加密过程  
         byte[] cipherData=RSAEncrypt.encrypt(RSAEncrypt.loadPublicKeyByStr(RSAEncrypt.loadPublicKeyByFile(filepath)),plainText.getBytes());  
-        String cipher=Base64.encode(cipherData);  
+        String cipher=Base64.encodeBase64String(cipherData);  
         //私钥解密过程  
-        byte[] res=RSAEncrypt.decrypt(RSAEncrypt.loadPrivateKeyByStr(RSAEncrypt.loadPrivateKeyByFile(filepath)), Base64.decode(cipher));  
+        byte[] res=RSAEncrypt.decrypt(RSAEncrypt.loadPrivateKeyByStr(RSAEncrypt.loadPrivateKeyByFile(filepath)), Base64.decodeBase64(cipher.getBytes()));  
         String restr=new String(res);  
         System.out.println("原文："+plainText);  
         System.out.println("加密："+cipher);  
@@ -25,9 +27,9 @@ public class MainTest {
         plainText="ihep_私钥加密公钥解密";  
         //私钥加密过程  
         cipherData=RSAEncrypt.encrypt(RSAEncrypt.loadPrivateKeyByStr(RSAEncrypt.loadPrivateKeyByFile(filepath)),plainText.getBytes());  
-        cipher=Base64.encode(cipherData);  
+        cipher=Base64.encodeBase64String(cipherData);  
         //公钥解密过程  
-        res=RSAEncrypt.decrypt(RSAEncrypt.loadPublicKeyByStr(RSAEncrypt.loadPublicKeyByFile(filepath)), Base64.decode(cipher));  
+        res=RSAEncrypt.decrypt(RSAEncrypt.loadPublicKeyByStr(RSAEncrypt.loadPublicKeyByFile(filepath)),  Base64.decodeBase64(cipher.getBytes()));  
         restr=new String(res);  
         System.out.println("原文："+plainText);  
         System.out.println("加密："+cipher);  
